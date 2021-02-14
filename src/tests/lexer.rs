@@ -1,10 +1,25 @@
-use crate::{lex, token::Token::*};
+use crate::{lex, token::Token::*, Error::*};
 
 #[test]
 fn simple_numbers() {
     assert_eq!(lex("1"), Ok(vec! { Number(1) }));
     assert_eq!(lex("42"), Ok(vec! { Number(42) }));
     assert_eq!(lex("250"), Ok(vec! { Number(250) }));
+    assert_eq!(lex("123"), Ok(vec! { Number(123) }));
+}
+
+#[test]
+fn overflow() {
+    assert_eq!(
+        lex("300"),
+        Err(Lexer("found too big integer 300..".to_owned()))
+    );
+    assert_eq!(
+        lex("256"),
+        Err(Lexer("found too big integer 256..".to_owned()))
+    );
+    assert_eq!(lex("255"), Ok(vec! { Number(255) }));
+    assert_eq!(lex("199"), Ok(vec! { Number(199) }));
 }
 
 #[test]
