@@ -1,5 +1,5 @@
-use alloc::{vec, borrow::ToOwned};
 use crate::{lex, token::Token::*, Error::*};
+use alloc::{borrow::ToOwned, vec};
 
 #[test]
 fn simple_numbers() {

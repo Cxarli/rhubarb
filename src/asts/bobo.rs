@@ -2,7 +2,7 @@
  * This is the AST for the 8080 output language. It consists of a series of instructions.
  * Each instruction can either be a single operation or loading a literal into a register.
  */
-use alloc::{vec::Vec, string::String};
+use alloc::{string::String, vec::Vec};
 
 /**
  * For simplicity, this is an alias

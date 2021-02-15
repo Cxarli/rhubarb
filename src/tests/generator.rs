@@ -1,4 +1,4 @@
-use alloc::{vec, borrow::ToOwned};
+use alloc::{borrow::ToOwned, vec};
 
 use crate::{
     asts::bobo::{Instruction::*, Load::*, Reg},

@@ -1,4 +1,4 @@
-use alloc::{vec, vec::Vec, format, boxed::Box, borrow::ToOwned};
+use alloc::{borrow::ToOwned, boxed::Box, format, vec, vec::Vec};
 
 /**!
  * The parser is the second step of a compiler. It takes the list

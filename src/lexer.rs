@@ -1,4 +1,4 @@
-use alloc::{vec, vec::Vec, format};
+use alloc::{format, vec, vec::Vec};
 
 /**!
  * The lexer is the first part of a compiler, and is responsible
