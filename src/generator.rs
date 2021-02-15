@@ -1,3 +1,5 @@
+use alloc::string::String;
+
 /**!
  * The generator is the last step in the compiler chain.
  * It takes the AST either directly from the parser or after

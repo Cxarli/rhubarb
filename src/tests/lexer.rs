@@ -1,3 +1,4 @@
+use alloc::{vec, borrow::ToOwned};
 use crate::{lex, token::Token::*, Error::*};
 
 #[test]

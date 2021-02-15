@@ -1,3 +1,5 @@
+use alloc::vec;
+
 use crate::tests::parser::{add, number};
 use crate::{
     asts::bobo::{Arithmetic::*, Instruction::*, Load::*, Reg},

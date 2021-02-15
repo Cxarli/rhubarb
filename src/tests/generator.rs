@@ -1,3 +1,5 @@
+use alloc::{vec, borrow::ToOwned};
+
 use crate::{
     asts::bobo::{Instruction::*, Load::*, Reg},
     generate,

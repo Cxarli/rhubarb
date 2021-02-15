@@ -1,3 +1,5 @@
+use alloc::{vec, vec::Vec, format};
+
 /**!
  * The lexer is the first part of a compiler, and is responsible
  * for converting the input (string, file, etc)  into a list of
