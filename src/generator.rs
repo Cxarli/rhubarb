@@ -1,13 +1,13 @@
-use crate::{
-    asts::bobo::{self, Ast},
-    Error,
-};
-/**!
+/*!
  * The generator is the last step in the compiler chain.
  * It takes the AST either directly from the parser or after
  * some optimisation steps, and turns it into the wanted output
  * code.
  */
+use crate::{
+    asts::bobo::{self, Ast},
+    Error,
+};
 use alloc::{format, string::String};
 
 /**

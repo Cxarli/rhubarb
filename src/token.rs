@@ -1,4 +1,4 @@
-/**!
+/*!
  * A token is a single "unit" in the input string.
  * This can for example be an operator like +
  * or a number like 42.
@@ -13,19 +13,19 @@
  */
 #[derive(Debug, Clone, Eq, PartialEq)]
 pub enum Token {
-    /// +
+    /// `+`
     Plus,
-    /// -
+    /// `-`
     Minus,
-    /// *
+    /// `*`
     Asterisk,
-    /// /
+    /// `/`
     Slash,
-    /// %
+    /// `%`
     Percent,
-    /// (
+    /// `(`
     LeftParen,
-    /// )
+    /// `)`
     RightParen,
     /// any number between 0-255
     Number(u8),

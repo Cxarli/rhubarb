@@ -9,22 +9,22 @@ use crate::{
 /**
  * Helpers to create some common AST nodes
  */
-pub(in crate::tests) fn number(num: u8) -> Ast {
+pub fn number(num: u8) -> Ast {
     AstNode::Literal(Literal::Number(num))
 }
-pub(in crate::tests) fn add(a: Ast, b: Ast) -> Ast {
+pub fn add(a: Ast, b: Ast) -> Ast {
     AstNode::BinOp(Box::new(BinOp::Add(a, b)))
 }
-pub(in crate::tests) fn subtract(a: Ast, b: Ast) -> Ast {
+pub fn subtract(a: Ast, b: Ast) -> Ast {
     AstNode::BinOp(Box::new(BinOp::Subtract(a, b)))
 }
-pub(in crate::tests) fn multiply(a: Ast, b: Ast) -> Ast {
+pub fn multiply(a: Ast, b: Ast) -> Ast {
     AstNode::BinOp(Box::new(BinOp::Multiply(a, b)))
 }
-pub(in crate::tests) fn divide(a: Ast, b: Ast) -> Ast {
+pub fn divide(a: Ast, b: Ast) -> Ast {
     AstNode::BinOp(Box::new(BinOp::Divide(a, b)))
 }
-pub(in crate::tests) fn modulo(a: Ast, b: Ast) -> Ast {
+pub fn modulo(a: Ast, b: Ast) -> Ast {
     AstNode::BinOp(Box::new(BinOp::Modulo(a, b)))
 }
 

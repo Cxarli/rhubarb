@@ -1,10 +1,10 @@
-use crate::{Error, Token};
-/**!
+/*!
  * The lexer is the first part of a compiler, and is responsible
  * for converting the input string into a list of
  * tokens recognised by the compiler.
  * These tokens can be found in `token.rs`
  */
+use crate::{Error, Token};
 use alloc::{format, vec, vec::Vec};
 
 /**

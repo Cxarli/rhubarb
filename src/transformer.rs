@@ -1,3 +1,8 @@
+/*!
+ * The transformer is the third step of a common compiler chain.
+ * It takes the AST from the input language and converts it to
+ * the AST supported by the output language.
+ */
 use crate::{
     asts::{
         bobo::{self, *},
@@ -5,11 +10,6 @@ use crate::{
     },
     Error,
 };
-/**!
- * The transformer is the third step of a common compiler chain.
- * It takes the AST from the input language and converts it to
- * the AST supported by the output language.
- */
 use alloc::{borrow::ToOwned, vec, vec::Vec};
 
 type Regs = [bool; 8];

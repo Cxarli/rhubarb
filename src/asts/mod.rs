@@ -1,4 +1,4 @@
-/**!
+/*!
  * The Abstract Syntax Tree (AST) is the general structure of a program.
  * It can be seen as a big graph connecting the different parts.
  *
@@ -6,5 +6,13 @@
  * - expr: used by the input language, only supports arithmetic
  * - bobo: used by the 8080 output language
  */
+
+/**
+ *  The 8080 AST
+ */
 pub mod bobo;
+
+/**
+ * The input AST
+ */
 pub mod expr;

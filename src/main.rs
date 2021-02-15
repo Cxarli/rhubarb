@@ -1,7 +1,5 @@
-/**!
- * Rhubarb is a very simple compiler from a basic math equation
- * containing just numbers and +-/%* into a series of instructions
- * which fit the Intel 8080 manual.
+/*!
+ * An example binary
  */
 use rhubarb::*;
 
