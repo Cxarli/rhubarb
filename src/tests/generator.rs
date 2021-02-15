@@ -11,6 +11,6 @@ fn zero() {
         generate(vec! {
             Load(Mvi(Reg::A, 0)),
         }),
-        Ok("MVI 0\n".to_owned())
+        Ok("MVI A,0\n".to_owned())
     );
 }

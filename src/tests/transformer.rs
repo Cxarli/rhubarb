@@ -1,6 +1,6 @@
 use alloc::vec;
 
-use crate::tests::parser::{add, number};
+use crate::tests::parser::{number, subtract};
 use crate::{
     asts::bobo::{Arithmetic::*, Instruction::*, Load::*, Reg},
     transform,
@@ -17,13 +17,13 @@ fn zero() {
 }
 
 #[test]
-fn simple_sum() {
+fn simple_subtraction() {
     assert_eq!(
-        transform(add(number(1), number(2))),
+        transform(subtract(number(6), number(4))),
         Ok(vec! {
-            Load(Mvi(Reg::A, 1)),
-            Load(Mvi(Reg::B, 2)),
-            Arithmetic(Add(Reg::B)),
+            Load(Mvi(Reg::B, 4)),
+            Load(Mvi(Reg::A, 6)),
+            Arithmetic(Sub(Reg::B)),
         })
     );
 }

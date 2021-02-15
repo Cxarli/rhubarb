@@ -13,6 +13,7 @@ pub type Ast = AstNode;
  */
 #[derive(Debug, Clone, Eq, PartialEq)]
 pub enum AstNode {
+    // This one is boxed because it could otherwise contain a cycle back to AstNode
     BinOp(Box<BinOp>),
     Literal(Literal),
 }

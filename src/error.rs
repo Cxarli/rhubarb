@@ -1,3 +1,6 @@
+/**!
+ * The general error capturer across the entire compiler chain.
+ */
 use alloc::string::String;
 
 /**

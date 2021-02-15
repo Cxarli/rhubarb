@@ -33,10 +33,12 @@ pub enum Arithmetic {
     Add(Reg),
     /// Subtract the value of the register from A
     Sub(Reg),
-    /// Multiply the value of the register with A
+    /// Multiply A by the value of the register
     Mul(Reg),
-    Divide(Reg),
-    Modulo(Reg),
+    /// Divide A by the value of the register
+    Div(Reg),
+    /// Take the remainder of A after division by the register
+    Mod(Reg),
 }
 
 /**
@@ -46,6 +48,8 @@ pub enum Arithmetic {
 pub enum Load {
     /// Move the value into the given register
     Mvi(Reg, u8),
+    /// Move from one register to another
+    Mov(/*dest*/ Reg, /*src*/ Reg),
 }
 
 /**
@@ -53,7 +57,7 @@ pub enum Load {
  * This can either be used temporarily (B, C, D, E),
  * or to access memory (H, L, M).
  */
-#[derive(Debug, Clone, Eq, PartialEq)]
+#[derive(Debug, Clone, Copy, Eq, PartialEq)]
 pub enum Reg {
     /// B, C, D, E are normal registers
     B = 0b000,
@@ -70,4 +74,23 @@ pub enum Reg {
 
     /// A is the accumulator
     A = 0b111,
+}
+
+impl Reg {
+    /**
+     * Get the name of the register as used by the assembly
+     */
+    pub fn name(&self) -> char {
+        use Reg::*;
+        match self {
+            B => 'B',
+            C => 'C',
+            D => 'D',
+            E => 'E',
+            H => 'H',
+            L => 'L',
+            M => 'M',
+            A => 'A',
+        }
+    }
 }
