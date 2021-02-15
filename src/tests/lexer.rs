@@ -46,3 +46,11 @@ fn simple_div() {
 fn simple_mod() {
     assert_eq!(lex("10 % 4"), Ok(vec! { Number(10), Percent, Number(4) }));
 }
+
+#[test]
+fn parentheses() {
+    assert_eq!(
+        lex("4 * (2 + 3)"),
+        Ok(vec! { Number(4), Asterisk, LeftParen, Number(2), Plus, Number(3), RightParen })
+    );
+}

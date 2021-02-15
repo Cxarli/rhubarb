@@ -4,11 +4,175 @@
  * Abstract Syntax Tree (AST). This tree gives the general structure
  * of the input program.
  */
-use crate::{asts::expr::Ast, Error, Token};
+use crate::{
+    asts::expr::{Ast, AstNode::*, BinOp, Literal},
+    Error, Token,
+};
+
+/**
+ * The Shunting-Yard algorithm is used to convert between infix notation (1 + 2)
+ * which humans use to enter it to postfix notation (1 2 +) which computers like to use
+ *
+ * When the amount of parentheses mismatch, or when two numbers follow each other
+ * without operator, this returns an error
+ */
+fn shunting_yard(tokens: Vec<Token>) -> Result<Vec<Token>, Error> {
+    use Token::*;
+
+    // the output vector
+    let mut output = vec![];
+    // the temporary operators queue
+    let mut operators: Vec<Token> = vec![];
+
+    // whether we were last dealing with a number(-like) and
+    // now expect an operator
+    let mut was_number = false;
+
+    // loop over all input tokens
+    for token in tokens {
+        match token {
+            // when we get a number directly after another number,
+            // something is wrong
+            Number(x) if was_number => {
+                return Err(Error::Parser(format!(
+                    "Unexpected number {} where operator expected",
+                    x
+                )));
+            }
+
+            // handle a number when the previous item was not a nunmber
+            Number(_) => {
+                was_number = true;
+                output.push(token);
+            }
+
+            // handle operators
+            Plus | Minus | Asterisk | Slash | Percent => {
+                was_number = false;
+
+                while let Some(last) = operators.pop() {
+                    if last != LeftParen && last.precedence() >= token.precedence() {
+                        output.push(last);
+                    } else {
+                        operators.push(last);
+                        break;
+                    }
+                }
+
+                operators.push(token);
+            }
+
+            // handle left parenthesis
+            LeftParen => {
+                was_number = false;
+                operators.push(token);
+            }
+
+            // handle right parenthesis
+            RightParen => {
+                // technically everything between parentheses
+                // counts as a number, so we're gonna set this to yes
+                was_number = true;
+
+                // keep popping from the operators stack until a left paren is found
+                let found = loop {
+                    if let Some(last) = operators.pop() {
+                        if last == LeftParen {
+                            break true;
+                        }
+                        output.push(last);
+                    } else {
+                        break false;
+                    }
+                };
+
+                // if no left paren was found, error
+                if !found {
+                    return Err(Error::Parser(
+                        "did not find missing left parenthesis".to_owned(),
+                    ));
+                }
+            }
+        }
+    }
+
+    // make sure we end with a number
+    if !was_number {
+        return Err(Error::Parser("must end with number".to_owned()));
+    }
+
+    // move all remaining operators to the output
+    while let Some(token) = operators.pop() {
+        // these shouldn't happen anymore
+        if token == LeftParen {
+            return Err(Error::Parser(
+                "unexpected left parenthesis too many".to_owned(),
+            ));
+        }
+
+        // push to output
+        output.push(token);
+    }
+
+    Ok(output)
+}
 
 /**
  *  Parse the token list into an AST
  */
-pub fn parse(_tokens: Vec<Token>) -> Result<Ast, Error> {
-    unimplemented!();
+pub fn parse(tokens: Vec<Token>) -> Result<Ast, Error> {
+    use BinOp::*;
+    use Literal::Number;
+
+    // first we convert our infix notation to postfix notation
+    let tokens = shunting_yard(tokens)?;
+
+    // we need at least one token
+    if tokens.is_empty() {
+        return Err(Error::Parser("need at least one token".to_owned()));
+    }
+
+    // the root node of the ast
+    let mut stack = vec![];
+
+    for token in tokens.into_iter() {
+        match token {
+            // convert a token number to an AST number
+            Token::Number(x) => {
+                stack.push(Literal(Number(x)));
+            }
+
+            // handle binops
+            Token::Plus | Token::Minus | Token::Asterisk | Token::Slash | Token::Percent => {
+                // get two items
+                if let (Some(a), Some(b)) = (stack.pop(), stack.pop()) {
+                    // convert into AST binop
+                    use Token::*;
+                    let binop = match token {
+                        Plus => Add(b, a),
+                        Minus => Subtract(b, a),
+                        Asterisk => Multiply(b, a),
+                        Slash => Divide(b, a),
+                        Percent => Modulo(b, a),
+                        _ => unreachable!(),
+                    };
+
+                    // push on stack
+                    stack.push(BinOp(Box::new(binop)));
+                } else {
+                    return Err(Error::Parser("binop needs 2 items".to_owned()));
+                }
+            }
+
+            // these are filtered out already
+            Token::LeftParen | Token::RightParen => unreachable!(),
+        }
+    }
+
+    // make sure stack only has one node left
+    if stack.len() != 1 {
+        return Err(Error::Parser("too many items left on stack".to_owned()));
+    }
+
+    Ok(stack.pop().unwrap())
 }

@@ -90,6 +90,16 @@ pub fn lex(input: &str) -> Result<Vec<Token>, Error> {
                 state.tokens.push(Percent);
             }
 
+            // handle parentheses
+            '(' => {
+                end_number(&mut state);
+                state.tokens.push(LeftParen);
+            }
+            ')' => {
+                end_number(&mut state);
+                state.tokens.push(RightParen);
+            }
+
             // handle any other character, which we didn't expect
             _ => {
                 return Err(Error::Lexer(format!(

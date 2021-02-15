@@ -7,7 +7,7 @@ use crate::{
 /**
  * Helpers to create some common AST nodes
  */
-pub(in crate::tests) fn number(num: i8) -> Ast {
+pub(in crate::tests) fn number(num: u8) -> Ast {
     AstNode::Literal(Literal::Number(num))
 }
 pub(in crate::tests) fn add(a: Ast, b: Ast) -> Ast {
@@ -62,5 +62,34 @@ fn complex() {
     assert_eq!(
         parse(vec! { Number(6), Asterisk, Number(3), Plus, Number(9) }),
         Ok(add(multiply(number(6), number(3)), number(9)))
+    );
+}
+
+#[test]
+fn parentheses() {
+    assert_eq!(
+        // 4 * (2 + 3)
+        parse(vec! {
+            Number(4), Asterisk, LeftParen, Number(2), Plus, Number(3), RightParen
+        }),
+        Ok(multiply(number(4), add(number(2), number(3))))
+    );
+
+    assert_eq!(
+        // (5 * ((2 + 4) / 3))
+        parse(vec! {
+            LeftParen,
+                Number(5), Asterisk, LeftParen,
+                    LeftParen,
+                        Number(2), Plus, Number(4),
+                    RightParen,
+                    Slash, Number(3),
+                RightParen,
+            RightParen,
+        }),
+        Ok(multiply(
+            number(5),
+            divide(add(number(2), number(4)), number(3))
+        ))
     );
 }

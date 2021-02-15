@@ -33,5 +33,5 @@ pub enum BinOp {
  */
 #[derive(Debug, Clone, Eq, PartialEq)]
 pub enum Literal {
-    Number(i8),
+    Number(u8),
 }
