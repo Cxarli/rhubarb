@@ -1,6 +1,6 @@
 [package]
 name = "rhubarb"
-version = "0.1.0"
+version = "0.2.0"
 authors = ["Cxarli <10348289+Cxarli@users.noreply.github.com>"]
 edition = "2018"
 
